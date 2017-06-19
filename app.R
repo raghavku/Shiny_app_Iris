@@ -8,13 +8,10 @@
 #
 attach(iris)
 library(shiny)
-library(corrgram)
-library(dplyr)
-library(party)
-
+library(rpart)
+fit = rpart(Species ~., iris)
 # Define UI for application that draws a histogram
 ui <- fluidPage(
-   
    # Application title
    titlePanel("Predicting Flower Species: Iris Dataset"),
    
@@ -58,9 +55,11 @@ server <- function(input, output) {
         Sepal.Length = input$Sepal.Length,
         Sepal.Width = input$Sepal.Width,
         Petal.Length = input$Petal.Length,
-        Petal.Width = input$Petal.Width
-      )
-      paste("This flower is:", runif(1))
+        Petal.Width = input$Petal.Width)
+        
+        species = predict(fit, new_data, type="class")
+        print(new_data)
+        paste("This flower is:", species)
    })
 }
 
